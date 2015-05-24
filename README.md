@@ -33,6 +33,10 @@ Contains constants describing **notes**, **octaves** and **pitch classes**, and 
 
 Contains constants from the general MIDI standard for messages, notes, controllers and so on.
 
+## Dependencies
+
+This currently uses github/vishnubob/python-midi, but I was unable to get pip to work on this machine this weekend. 
+Will fix this shortly.
 
 
   
