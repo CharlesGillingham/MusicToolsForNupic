@@ -2,11 +2,6 @@
 # Message types
 # -----------------------------------------------------------------------------
 # possible values for message.messageNumber
-
-Message_Min   = 0x80
-Message_Max   = 0xF0
-Message_Count = 8
-
 Message_NoteOff		    = 0x80
 Message_NoteOn		    = 0x90
 Message_NotePressure    = 0xA0
@@ -19,8 +14,7 @@ Message_System          = 0xF0  # Includes Meta messages (in files)
 # -----------------------------------------------------------------------------
 # Channel messages
 # -----------------------------------------------------------------------------
-# possible values for message.channel
-
+# values for message.channel
 Channel_Min   = 0
 Channel_Max   = 15
 Channel_Count = 16
@@ -29,8 +23,9 @@ Channel_Count = 16
 Channel_Percussion =  9
 
 # -----------------------------------------------------------------------------
-# Channel messages / Note Messages / Percussion messages
+# Channel messages / Note Messages
 # -----------------------------------------------------------------------------
+# values for message.note
 Note_Min = 0
 Note_Max = 127
 Note_Count = 128
@@ -100,6 +95,11 @@ Controller_FineGeneralPurpose2  = 49
 Controller_FineGeneralPurpose3  = 50
 Controller_FineGeneralPurpose4  = 51
 
+# -----------------------------------------------------------------------------
+# Channel messages / Control Message / Sound control
+# -----------------------------------------------------------------------------
+# Values for message.controllerNumber
+
 # sound control
 Controller_SoundVariation        = 70
 Controller_SoundTimbre           = 71  # AKA "FilterResonance"
@@ -128,9 +128,8 @@ Controller_GeneralPurpose6       = 81
 Controller_GeneralPurpose7       = 82
 Controller_GeneralPurpose8       = 83
 
-
 # -----------------------------------------------------------------------------
-# Channel messages / Control Message / BinaryController
+# Channel messages / Control Message / BinaryControllers
 # -----------------------------------------------------------------------------
 # Values for message.controllerNumber
 
@@ -144,7 +143,7 @@ Controller_Hold2            = 69
 # -----------------------------------------------------------------------------
 # Channel messages / Control Message / Registered Parameters
 # -----------------------------------------------------------------------------
-# The "registered parameter" system allows up to 16384 more virtualControllers.
+# The "registered parameter" system allows up to 16384 more virtual controllers.
 
 RPN_PitchBendSensitivity	= 0x0000
 RPN_MasterFineTuning		= 0x0001
@@ -154,7 +153,7 @@ RPN_ModDepthRange           = 0x0005
 
 RPN_Null					= 0x3fff	#! 0x7f/0x7f (from AUMIDIDefs.h: may be Apple-specific)
 
-# Values for message.controllerNumber (TheseController numbers should not be needed to send messages normalRPNControllers. The constructors above combine four messages to set anRPN parameter. However this interface does not currently provide an interface to parse a set of messages and determine the current value of anRPN parameter.
+# Values for message.controllerNumber (These controller numbers should not be needed to send messages normalRPNControllers. The constructors above combine four messages to set anRPN parameter. However this interface does not currently provide an interface to parse a set of messages and determine the current value of anRPN parameter.
 Controller_RPN_DataEntry_MSB                = 6
 Controller_RPN_DataEntry_LSB                = 38
 Controller_RPN_DataButtonIncrement          = 96
@@ -184,8 +183,11 @@ Controller_Mode_OmniModeOn    = 125
 Controller_Mode_MonoOperation = 126
 Controller_Mode_PolyOperation = 127
 
-# Value for message.controlType
-# These are split up by their function and the type of data they provide
+# -----------------------------------------------------------------------------
+# Channel messages / Control Message / Channel Mode
+# -----------------------------------------------------------------------------
+# message.controlValueType
+# Classify a controller by the type of data it provide and the function it performs
 
 ControllerType_Continuous = 0 # value = 0..127
 ControllerType_Fine       = 1 # value = 0..127
@@ -194,19 +196,19 @@ ControllerType_RPN        = 3 # used to define moreControllers (see below)
 ControllerType_Mode       = 4 # value is ignored
 ControllerType_Undefined  = 5 # probably represents an error
 
-# The type is defined by the control number:
-# 00-19 continuousControllers
-# 20-31 undefined
-# 32-51 continuousControllers (fine control)
-# 52-63 undefined
-# 64-69 binaryControllers
-# 70-83 continuousControllers (sound)
-# 85-90 undefined
-# 91-95 continuousControllers (effects)
-# 96-101RPNController messages
-# 102-119 undefined
-# 120-127 mode messages
-
+def ControlType( controlNumber ):
+    if (controlNumber <= 19): return ControllerType_Continuous  # coarse
+    if (controlNumber <= 31): return ControllerType_Undefined
+    if (controlNumber <= 51): return ControllerType_Continuous  # fine
+    if (controlNumber <= 63): return ControllerType_Undefined
+    if (controlNumber <= 69): return ControllerType_Binary
+    if (controlNumber <= 83): return ControllerType_Continuous  # sound
+    if (controlNumber <= 90): return ControllerType_Undefined
+    if (controlNumber <= 95): return ControllerType_Continuous  # effects
+    if (controlNumber <= 101): return ControllerType_RPN
+    if (controlNumber <= 199): return ControllerType_Undefined
+    if (controlNumber <= 127): return ControllerType_Mode
+    return ControllerType_Undefined
 
 # -----------------------------------------------------------------------------
 # Channel messages / Program Change
