@@ -34,7 +34,7 @@ Contains constants describing **notes**, **octaves** and **pitch classes**, and 
 
 **Music.pitchInHz** ( _note_ )
 
-**Music,noteName ( _note_ )
+**Music,noteName** ( _note_ )
 
 **Music.intervalClassicalConsonance** ( _note1_, _note2_ ) Consonance as it is taught to elementary music theory students, with four possible values: Music.dissonance, Music.consonant, Music.perfectConsonance, Music.unison
 
