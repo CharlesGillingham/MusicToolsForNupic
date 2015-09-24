@@ -8,7 +8,7 @@ This depends on github/olemb/mido
 
 Use from MIDIVelocityData import *
 
-**LoadVelocityDataFromMIDIFilee** ( _fileName_ ) read the MIDI file _fileName_ and return a numpy array _d_ = [_length_ _of_ _piece_ _in_ _ticks_ X MIDI.Note_Count] where:     
+**LoadVelocityDataFromMIDIFile** ( _fileName_ ) read the MIDI file _fileName_ and return a numpy array _d_ = [_length_ _of_ _piece_ _in_ _ticks_ X MIDI.Note_Count] where:     
 
 If note _n_ is playing at time _t_, then d[_t_,_n_] is the velocity used when the note began.
 
